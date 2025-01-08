@@ -1,7 +1,9 @@
 import { Box, Button, Typography } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
 import './homepage.css';
 
 const HomePage = () => {
+  const navigate = useNavigate();
 
   return(
     <Box>
@@ -24,9 +26,9 @@ const HomePage = () => {
                   <h1><span class="text-primary">Welcome</span> to the <>Atlas Hotel</></h1>
                   <p class="lead">Good day Ladies and Gentelmen, enjoy your stay</p>
                   <Box sx={{display: 'flex', width: '100%', justifyContent: 'center', alignItems: 'center', gap: '20px' }}>
-                    <Button variant='contained' size='large' sx={{backgroundColor: '#fca00a'}}>Book Now</Button>
+                    <Button variant='contained' size='large' sx={{backgroundColor: '#fca00a'}} onClick={() => {navigate('/login')}}>Book Now</Button>
                     <Typography>OR</Typography>
-                    <Button variant='contained'>Register</Button>
+                    <Button variant='contained' onClick={() => {navigate('/register')}}>Register</Button>
                   </Box>
               </div>
           </div>
