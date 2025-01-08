@@ -2,3 +2,9 @@
     font-family: HostGrotesk-SemiBold;
     src: url(HostGrotesk-SemiBold.ttf);
 }
+
+@font-face {
+    font-family: Serif-Regular;
+    src: url(DMSerifText-Regular.ttf);
+}
+
