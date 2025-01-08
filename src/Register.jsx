@@ -1,7 +1,6 @@
 import React, { useState, useCallback } from 'react';
-import { Box, Paper, TextField, Button, Typography, Snackbar, Alert, IconButton, InputAdornment } from '@mui/material';
-import Visibility from '@mui/icons-material/Visibility';
-import VisibilityOff from '@mui/icons-material/VisibilityOff';
+import { Box, Paper, TextField, Button, Typography, Snackbar, Alert, IconButton, InputAdornment, Backdrop, CircularProgress } from '@mui/material';
+import { Visibility, VisibilityOff } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
 import api from './services/api';
 
@@ -14,6 +13,7 @@ const Register = () => {
     const [open, setOpen] = useState(false);
     const [snackbarMessage, setSnackbarMessage] = useState('');
     const [snackbarSeverity, setSnackbarSeverity] = useState('success');
+    const [loading, setLoading] = useState(false); // State to track loading status
     const navigate = useNavigate();
 
     const handleTogglePasswordVisibility = () => {
@@ -37,6 +37,8 @@ const Register = () => {
             return;
         }
 
+        setLoading(true); // Show the loading backdrop
+
         try {
             const response = await api.post('/register', {
                 name,
@@ -51,12 +53,16 @@ const Register = () => {
             setSnackbarSeverity('success');
             setOpen(true);
 
-            setTimeout(() => { navigate('/dashboard'); }, 2000);
+            setTimeout(() => {
+                setLoading(false); // Hide the loading backdrop
+                navigate('/users');
+            }, 2000);
         } catch (error) {
             console.error('There was an error registering!', error);
             setSnackbarMessage('Registration failed. Please try again.');
             setSnackbarSeverity('error');
             setOpen(true);
+            setLoading(false); // Hide the loading backdrop
         }
     }, [name, email, password, confirmPassword, navigate]);
 
@@ -79,6 +85,9 @@ const Register = () => {
                 backgroundSize: 'cover',
                 backgroundPosition: 'center',
             }}>
+            <Backdrop sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }} open={loading}>
+                <CircularProgress color="inherit" />
+            </Backdrop>
             <Paper elevation={10} sx={{ padding: '30px', width: '390px' }}>
                 <form style={{ display: 'flex', flexDirection: 'column' }} onSubmit={handleSubmit}>
                     <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px' }}>
@@ -153,7 +162,7 @@ const Register = () => {
                         }}
                     />
 
-                    <Typography sx={{ fontSize: '13px', marginBottom: '20px', color: '#616060', marginTop: '15px' }}>
+                    <Typography sx={{ fontSize: '13px', marginBottom: '10px', color: '#616060' }}>
                         By completing your registration, you agree to adhere to Atlas Hotel's policies.
                     </Typography>
 
