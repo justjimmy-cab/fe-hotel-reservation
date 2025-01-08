@@ -52,8 +52,18 @@ const Register = () => {
 
 
     return (
-        <Box sx={{display: 'flex', height: '100vh', width: '100%', justifyContent: 'center', alignItems: 'center'}}>
-            <Paper elevation={7} sx={{padding: '20px', width: '350px'}}>
+        <Box 
+            sx={{
+                display: 'flex', 
+                height: '100vh', 
+                width: '100%', 
+                justifyContent: 'center', 
+                alignItems: 'center',
+                backgroundImage: 'url(images/images3.jpg)',
+                backgroundSize: 'cover',
+                backgroundPosition: 'center',
+            }}>
+            <Paper elevation={10} sx={{padding: '30px', width: '390px'}}>
                 <form style={{display: 'flex', flexDirection: 'column'}} onSubmit={handleSubmit}>
                     <Typography>Register</Typography>
 
