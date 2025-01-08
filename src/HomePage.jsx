@@ -23,11 +23,11 @@ const HomePage = () => {
       <div id="showcase">
           <div class="container">
               <div class="showcase-content">
-                  <h1><span class="text-primary">Welcome</span> to the <>Atlas Hotel</></h1>
+                  <h1><span class="text-primary">Welcome</span> to the <span id="name">Atlas Hotel</span></h1>
                   <p class="lead">Good day Ladies and Gentelmen, enjoy your stay</p>
                   <Box sx={{display: 'flex', width: '100%', justifyContent: 'center', alignItems: 'center', gap: '20px' }}>
-                    <Button variant='contained' size='large' sx={{backgroundColor: '#fca00a'}} onClick={() => {navigate('/login')}}>Book Now</Button>
-                    <Typography>OR</Typography>
+                    <Button variant='contained' size='large' sx={{backgroundColor: '#9fff21', color: '#452700'}} onClick={() => {navigate('/login')}}>Book Now</Button>
+                    <Typography sx={{ fontSize: '13px' }}>OR</Typography>
                     <Button variant='contained' onClick={() => {navigate('/register')}}>Register</Button>
                   </Box>
               </div>
