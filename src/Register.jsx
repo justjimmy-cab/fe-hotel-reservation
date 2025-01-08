@@ -1,24 +1,39 @@
-import React, { useState } from 'react';
-import { Box, Paper, TextField, Button, Typography, Snackbar, Alert } from '@mui/material';
+import React, { useState, useCallback } from 'react';
+import { Box, Paper, TextField, Button, Typography, Snackbar, Alert, IconButton, InputAdornment } from '@mui/material';
+import Visibility from '@mui/icons-material/Visibility';
+import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import { useNavigate } from 'react-router-dom';
 import api from './services/api';
-
 
 const Register = () => {
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
-    const [open, setOpen] = useState(false); // State for Snackbar visibility
-    const [error, setError] = useState(''); // State for error message
+    const [showPassword, setShowPassword] = useState(false);
+    const [open, setOpen] = useState(false);
+    const [snackbarMessage, setSnackbarMessage] = useState('');
+    const [snackbarSeverity, setSnackbarSeverity] = useState('success');
     const navigate = useNavigate();
 
+    const handleTogglePasswordVisibility = () => {
+        setShowPassword(!showPassword);
+    };
 
-    const handleSubmit = async (e) => {
+    const handleSubmit = useCallback(async (e) => {
         e.preventDefault();
 
+        if (!name || !email || !password || !confirmPassword) {
+            setSnackbarMessage('All fields are required');
+            setSnackbarSeverity('error');
+            setOpen(true);
+            return;
+        }
+
         if (password !== confirmPassword) {
-            setError('Passwords do not match');
+            setSnackbarMessage('Passwords do not match');
+            setSnackbarSeverity('error');
+            setOpen(true);
             return;
         }
 
@@ -29,27 +44,28 @@ const Register = () => {
                 password,
             });
 
-            // Store the token in localStorage 
             localStorage.setItem('auth_token', response.data.token);
 
             console.log('Registration successful', response.data);
-            setOpen(true); // Show Snackbar on success
+            setSnackbarMessage('Registration successful!');
+            setSnackbarSeverity('success');
+            setOpen(true);
 
-            // Delay navigation for 3 seconds 
             setTimeout(() => { navigate('/dashboard'); }, 2000);
         } catch (error) {
             console.error('There was an error registering!', error);
-            setError('Registration failed. Please try again.');
+            setSnackbarMessage('Registration failed. Please try again.');
+            setSnackbarSeverity('error');
+            setOpen(true);
         }
-    };
+    }, [name, email, password, confirmPassword, navigate]);
 
-    const handleClose = (event, reason) => {
+    const handleClose = useCallback((event, reason) => {
         if (reason === 'clickaway') {
             return;
         }
         setOpen(false);
-    };
-
+    }, []);
 
     return (
         <Box 
@@ -63,9 +79,12 @@ const Register = () => {
                 backgroundSize: 'cover',
                 backgroundPosition: 'center',
             }}>
-            <Paper elevation={10} sx={{padding: '30px', width: '390px'}}>
-                <form style={{display: 'flex', flexDirection: 'column'}} onSubmit={handleSubmit}>
-                    <Typography>Register</Typography>
+            <Paper elevation={10} sx={{ padding: '30px', width: '390px' }}>
+                <form style={{ display: 'flex', flexDirection: 'column' }} onSubmit={handleSubmit}>
+                    <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px' }}>
+                        <Typography sx={{ fontFamily: 'Serif-Regular', fontSize: '30px' }}>Register</Typography>
+                        <Typography sx={{ marginRight: '20px', fontFamily: 'HostGrotesk-SemiBold', color: '#db8009' }}>Atlas Hotel</Typography>
+                    </Box>
 
                     <TextField 
                         label="Full Name"
@@ -74,6 +93,7 @@ const Register = () => {
                         size='medium'
                         value={name}
                         onChange={(e) => setName(e.target.value)}
+                        required
                     />
 
                     <TextField 
@@ -83,6 +103,8 @@ const Register = () => {
                         size='medium'
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
+                        type="email"
+                        required
                     />
 
                     <TextField 
@@ -92,6 +114,20 @@ const Register = () => {
                         size='medium'
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
+                        type={showPassword ? 'text' : 'password'}
+                        required
+                        InputProps={{
+                            endAdornment: (
+                                <InputAdornment position="end">
+                                    <IconButton
+                                        aria-label="toggle password visibility"
+                                        onClick={handleTogglePasswordVisibility}
+                                    >
+                                        {showPassword ? <VisibilityOff /> : <Visibility />}
+                                    </IconButton>
+                                </InputAdornment>
+                            ),
+                        }}
                     />
 
                     <TextField 
@@ -99,22 +135,35 @@ const Register = () => {
                         variant="outlined"
                         margin="normal"
                         size='medium'
-                        sx={{marginBottom: '20px'}}
                         value={confirmPassword}
                         onChange={(e) => setConfirmPassword(e.target.value)}
+                        type={showPassword ? 'text' : 'password'}
+                        required
+                        InputProps={{
+                            endAdornment: (
+                                <InputAdornment position="end">
+                                    <IconButton
+                                        aria-label="toggle password visibility"
+                                        onClick={handleTogglePasswordVisibility}
+                                    >
+                                        {showPassword ? <VisibilityOff /> : <Visibility />}
+                                    </IconButton>
+                                </InputAdornment>
+                            ),
+                        }}
                     />
 
+                    <Typography sx={{ fontSize: '13px', marginBottom: '20px', color: '#616060', marginTop: '15px' }}>
+                        By completing your registration, you agree to adhere to Atlas Hotel's policies.
+                    </Typography>
+
                     <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
-                        <Alert onClose={handleClose} severity="success"  variant="filled" sx={{ width: '100%', backgroundColor: '#31f756', }}>
-                            Registration successful!
+                        <Alert onClose={handleClose} severity={snackbarSeverity} variant="filled" sx={{ width: '100%' }}>
+                            {snackbarMessage}
                         </Alert>
                     </Snackbar>
 
-                    <Box sx={{width: '300px', height: '10px'}} maxWidth>
-                        {error && <Typography color="error" sx={{fontSize: '13px',}}>{error}</Typography>}
-                    </Box>
-
-                    <Button type="submit" variant='contained'>REGISTER</Button>
+                    <Button type="submit" size='large' variant='contained' sx={{ backgroundColor: '#ff9100' }}>REGISTER</Button>
                 </form>
             </Paper>
         </Box>
