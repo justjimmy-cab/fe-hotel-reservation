@@ -55,7 +55,7 @@ const Register = () => {
 
             setTimeout(() => {
                 setLoading(false); // Hide the loading backdrop
-                navigate('/users');
+                navigate('/login');
             }, 2000);
         } catch (error) {
             console.error('There was an error registering!', error);
