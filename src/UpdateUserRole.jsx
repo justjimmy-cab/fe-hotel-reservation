@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
-import { Button, FormControl, Select, MenuItem, Snackbar, Alert, Box, CircularProgress } from '@mui/material';
+import { Button, FormControl, Select, MenuItem, Snackbar, Alert, Box } from '@mui/material';
 
 const UpdateUserRole = ({ user, onUpdate }) => {
     const [role, setRole] = useState(user.role);
-    const [loading, setLoading] = useState(false);
     const [snackbarOpen, setSnackbarOpen] = useState(false);
     const [snackbarMessage, setSnackbarMessage] = useState('');
 
@@ -11,11 +10,9 @@ const UpdateUserRole = ({ user, onUpdate }) => {
         e.preventDefault();
         if (!role) return;
 
-        setLoading(true);
         onUpdate({ ...user, role }, (message) => {
             setSnackbarMessage(message);
             setSnackbarOpen(true);
-            setLoading(false);
         });
     };
 
@@ -44,9 +41,9 @@ const UpdateUserRole = ({ user, onUpdate }) => {
                     type="submit" 
                     variant="contained" 
                     sx={{ marginTop: 2, backgroundColor: '#296605', width: '100%' }} 
-                    disabled={loading || role === user.role}
+                    disabled={role === user.role}
                 >
-                    {loading ? <CircularProgress size={24} /> : 'Update Role'}
+                    Update Role
                 </Button>
             </Box>
             <Snackbar open={snackbarOpen} autoHideDuration={6000} onClose={handleClose}>
