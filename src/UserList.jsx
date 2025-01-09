@@ -13,6 +13,7 @@ import {
   Typography,
 } from '@mui/material';
 import api from './services/api'; // Import the centralized Axios instance
+import UpdateUserRole from './UpdateUserRole';
 
 const UserList = () => {
   const [users, setUsers] = useState([]);
@@ -47,6 +48,20 @@ const UserList = () => {
   const handleCloseModal = () => {
     setIsModalOpen(false); // Close the modal
     setSelectedUser(null); // Clear the selected user
+  };
+
+  const handleUpdate = (updatedUser, setSuccessMessage) => {
+    console.log(`Updating user with ID: ${updatedUser.id}, New Role: ${updatedUser.role}`);
+    api.put(`/users/${updatedUser.id}/role`, { role: updatedUser.role })
+        .then(response => {
+            console.log(response.data.message);
+            setUsers(users.map(user => user.id === updatedUser.id ? updatedUser : user));
+            setSuccessMessage('User role updated successfully!');
+        })
+        .catch(error => {
+            console.error('There was an error updating the user role!', error);
+            setSuccessMessage('Failed to update user role. Please try again.');
+        });
   };
 
   return (
@@ -126,6 +141,7 @@ const UserList = () => {
               {/* Add more fields as needed */}
             </Box>
           )}
+          <UpdateUserRole user={selectedUser} onUpdate={handleUpdate} />
           <Button
             variant="contained"
             color="primary"
