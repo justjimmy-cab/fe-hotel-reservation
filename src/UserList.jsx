@@ -89,7 +89,7 @@ const UserList = () => {
                     variant="contained"
                     color="primary"
                     onClick={() => handleViewUser(user)}
-                    sx={{ backgroundColor: '#296605' }}
+                    sx={{ backgroundColor: '#435e29' }}
                   >
                     View
                   </Button>
@@ -137,7 +137,6 @@ const UserList = () => {
               <Typography><strong>ID:</strong> {selectedUser.id}</Typography>
               <Typography><strong>Name:</strong> {selectedUser.name}</Typography>
               <Typography><strong>Email:</strong> {selectedUser.email}</Typography>
-              <Typography><strong>Role:</strong> {selectedUser.role}</Typography>
               {/* Add more fields as needed */}
             </Box>
           )}
