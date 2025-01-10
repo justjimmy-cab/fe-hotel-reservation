@@ -23,6 +23,7 @@ import MuiAlert from '@mui/material/Alert'; // Import MuiAlert for Snackbar
 import api from './services/api'; // Import the centralized Axios instance
 import UpdateUserRole from './UpdateUserRole';
 import { Delete as DeleteIcon } from '@mui/icons-material';
+import Logout from './Logout';
 
 const UserList = () => {
   const [users, setUsers] = useState([]);
@@ -116,7 +117,8 @@ const UserList = () => {
 
   return (
     <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column', backgroundColor: '#b8dbbf', height: '100vh', }}>
-      <Box sx={{display: 'flex', flexDirection: 'column', justifyContent: 'flex-end', marginBottom: '-50px'}}>
+      <Logout/>
+      <Box sx={{display: 'flex', flexDirection: 'column', justifyContent: 'flex-end', marginBottom: '-10px'}}>
       <Paper elevation={5} sx={{ marginTop: '20px', height: '540px', width: '1250px', overflow: 'auto', border: '1px solid black', borderRadius: '10px' }}>
         <Table>
           <TableHead sx={{ position: 'sticky', top: '0px', zIndex: '100', backgroundColor: '#fcba03' }}>
