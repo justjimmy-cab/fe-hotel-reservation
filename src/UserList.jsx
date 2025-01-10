@@ -23,7 +23,7 @@ import MuiAlert from '@mui/material/Alert'; // Import MuiAlert for Snackbar
 import api from './services/api'; // Import the centralized Axios instance
 import UpdateUserRole from './UpdateUserRole';
 import { Delete as DeleteIcon } from '@mui/icons-material';
-import Logout from './Logout';
+import { Logout } from './Logout';
 
 const UserList = () => {
   const [users, setUsers] = useState([]);
