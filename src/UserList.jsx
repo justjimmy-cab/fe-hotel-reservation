@@ -23,6 +23,7 @@ import MuiAlert from '@mui/material/Alert'; // Import MuiAlert for Snackbar
 import api from './services/api'; // Import the centralized Axios instance
 import UpdateUserRole from './UpdateUserRole';
 import { Delete as DeleteIcon } from '@mui/icons-material';
+import Logout from './Logout';
 
 const UserList = () => {
   const [users, setUsers] = useState([]);
@@ -115,8 +116,10 @@ const UserList = () => {
   };
 
   return (
-    <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column', backgroundColor: '#b8dbbf', height: '100vh' }}>
-      <Paper elevation={5} sx={{ marginTop: '20px', height: '600px', width: '1250px', overflow: 'auto', border: '1px solid black', borderRadius: '10px', }}>
+    <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column', backgroundColor: '#b8dbbf', height: '100vh', }}>
+      <Logout/>
+      <Box sx={{display: 'flex', flexDirection: 'column', justifyContent: 'flex-end', marginBottom: '-10px'}}>
+      <Paper elevation={5} sx={{ marginTop: '20px', height: '540px', width: '1250px', overflow: 'auto', border: '1px solid black', borderRadius: '10px' }}>
         <Table>
           <TableHead sx={{ position: 'sticky', top: '0px', zIndex: '100', backgroundColor: '#fcba03' }}>
             <TableRow sx={{ backgroundColor: '#fcba03', textAlign: 'center' }}>
@@ -168,6 +171,7 @@ const UserList = () => {
         color="primary"
         style={{ marginTop: '20px', display: 'flex', justifyContent: 'center' }}
       />
+      </Box>
 
       {/* Modal for displaying user details */}
       <Modal open={isModalOpen} onClose={handleCloseModal} aria-labelledby="user-details-modal" aria-describedby="user-details-description">
